@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Pixel-Perfect Depth</h1>
 
-[**Gangwei Xu**](https://gangweix.github.io/)<sup>1,2,\*</sup> · [**Haotong Lin**](https://haotongl.github.io/)<sup>3,\*</sup> · [**Hongcheng Luo**]<sup>2</sup> · [**Xianqi Wang**]<sup>1</sup> · [**Jingfeng Yao**](https://jingfengyao.github.io/)<sup>1</sup>
+[**Gangwei Xu**](https://gangweix.github.io/)<sup>1,2,&ast;</sup> · [**Haotong Lin**](https://haotongl.github.io/)<sup>3,&ast;</sup> · Hongcheng Luo<sup>2</sup> · [**Xianqi Wang**](https://scholar.google.com/citations?user=1GCLBNAAAAAJ&hl=zh-CN&oi=ao)<sup>1</sup> · [**Jingfeng Yao**](https://jingfengyao.github.io/)<sup>1</sup>
 <br>
 [**Lianghui Zhu**](https://scholar.google.com/citations?user=NvMHcs0AAAAJ&hl=zh-CN&oi=ao)<sup>1</sup> · Yuechuan Pu<sup>2</sup> · Cheng Chi<sup>2</sup> · Haiyang Sun<sup>2,&dagger;</sup> · Bing Wang<sup>2</sup> 
 <br>
@@ -9,7 +9,7 @@ Guang Chen<sup>2</sup> · Hangjun Ye<sup>2</sup> · [**Sida Peng**](https://peng
 
 <sup>1</sup>HUST&emsp; <sup>2</sup>Xiaomi EV&emsp; <sup>3</sup>Zhejiang University  
 <br>
-*co-first author &emsp; &dagger;project leader &emsp; ✉️ corresponding author
+&ast;co-first author &emsp; &dagger;project leader &emsp; ✉️ corresponding author
 
 <a href=""><img src='https://img.shields.io/badge/arXiv-Pixel Perfect Depth-red' alt='Paper PDF'></a>
 <a href='https://pixel-perfect-depth.github.io/'><img src='https://img.shields.io/badge/Project_Page-Pixel Perfect Depth-green' alt='Project Page'></a>
