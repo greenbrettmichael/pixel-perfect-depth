@@ -1,2 +1,12 @@
-# Pixel-Perfect Depth [NeurIPS 2025]
-Code is coming soon.
+<div align="center">
+<h1>Pixel-Perfect Depth</h1>
+
+<a href=""><img src='https://img.shields.io/badge/arXiv-Pixel-Perfect Depth-red' alt='Paper PDF'></a>
+<a href='https://pixel-perfect-depth.github.io/'><img src='https://img.shields.io/badge/Project_Page-Depth Anything V2-green' alt='Project Page'></a>
+<a href='https://huggingface.co/spaces/gangweix/Pixel-Perfect-Depth'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue'></a>
+</div>
+
+This work presents Pixel-Perfect Depth, a monocular depth estimation model with pixel-space diffusion transformers. Compared to existing discriminative and generative models, 
+its estimated depth maps can produce high-quality, flying-pixel-free point clouds.
+
+![teaser](assets/teaser.png)
