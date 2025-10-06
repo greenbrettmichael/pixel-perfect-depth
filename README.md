@@ -45,8 +45,8 @@ cd pixel-perfect-depth
 pip install -r requirements.txt
 ```
 
-Download our pretrained model [ppd.pth](https://huggingface.co/gangweix/Pixel-Perfect-Depth/resolve/main/ppd.pth) and put them under the `checkpoints` directory.
-In addition, you also need to download the pretrained model [depth_anything_v2_vitl.pth](https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth?download=true) and put them under the `checkpoints` directory.
+Download our pretrained model [ppd.pth](https://huggingface.co/gangweix/Pixel-Perfect-Depth/resolve/main/ppd.pth) and put it under the `checkpoints/` directory.
+In addition, you also need to download the pretrained model [depth_anything_v2_vitl.pth](https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth?download=true) and put it under the `checkpoints/` directory.
 
 ### Running depth on *images*
 
@@ -55,6 +55,9 @@ python run.py
 ```
 
 ### Running point cloud on *images*
+
+Generating point clouds requires metric depth and camera intrinsics from MoGe.
+Please download the pretrained model [moge2.pt](https://huggingface.co/Ruicheng/moge-2-vitl-normal/resolve/main/model.pt?download=true) and place it under the `checkpoints/` folder.
 
 ```bash
 python run_point_cloud.py --save_pcd
