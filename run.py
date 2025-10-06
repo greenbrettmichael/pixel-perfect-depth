@@ -62,7 +62,7 @@ if __name__ == '__main__':
         else:
             split_region = np.ones((image.shape[0], 50, 3), dtype=np.uint8) * 255
             combined_result = cv2.hconcat([image, split_region, vis_depth])
-            cv2.imwrite(os.path.join(args.outdir, os.path.splitext(os.path.basename(filename))[0] + '.jpg'), combined_result)
+            cv2.imwrite(os.path.join(args.outdir, os.path.splitext(os.path.basename(filename))[0] + '.png'), combined_result)
 
         if args.save_npy:
             depth_npy_dir = 'depth_npy'
