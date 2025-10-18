@@ -1,7 +1,7 @@
 [project]
 name = "pixel_perfect_depth"
 version = "0.1"
-description = "Inference/Model code for Pixel Perfect Depth monocular depth estimation."
+description = "Inference/Model for Pixel Perfect Depth monocular depth estimation."
 readme = "README.md"
 dependencies = [
     "torch",
@@ -21,6 +21,5 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["ppd"]
-
-src = ["ppd"]
+where = ["."]
+include = ["ppd*"]
