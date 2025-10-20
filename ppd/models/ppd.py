@@ -19,6 +19,7 @@ class PixelPerfectDepth(nn.Module):
         self,
         semantics_pth='checkpoints/depth_anything_v2_vitl.pth',
         sampling_steps=10,
+        encoder='vitl',
 
     ):
         super(PixelPerfectDepth, self).__init__()
@@ -27,9 +28,7 @@ class PixelPerfectDepth(nn.Module):
         self.device = DEVICE
 
         self.semantics_encoder = DepthAnythingV2(
-            encoder='vitl',
-            features=256,
-            out_channels=[256, 512, 1024, 1024]
+            encoder=encoder
         )
         self.semantics_encoder.load_state_dict(torch.load(semantics_pth, map_location='cpu'), strict=False)
         self.semantics_encoder = self.semantics_encoder.to(self.device).eval()
