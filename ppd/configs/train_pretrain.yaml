@@ -4,7 +4,7 @@ data:
     pretrain: True
     dataset_opts:
       - _target_: ppd.data.hypersim.Dataset
-        data_root: /mnt/evad_fs/worldmodel/xugangwei/data/Monocular_Data/Hypersim/processed
+        data_root: /data/Monocular_Data/Hypersim/processed
         split_path: ppd/datasets/hypersim/metadata_splits_filtered_train.json
         split: train
         dataset_name: 'hypersim'
@@ -20,35 +20,35 @@ data:
     dataset_opts:
 
       - _target_: ppd.data.nyu.Dataset
-        data_root: /mnt/evad_fs/worldmodel/xugangwei/data/Monocular_Data/NYU
+        data_root: /data/Monocular_Data/NYU
         split: test
         transforms:
           - _target_: ppd.data.transform.PrepareForNet
         split_path: ppd/datasets/nyu/filename_list_test.txt
 
       - _target_: ppd.data.diode.Dataset
-        data_root: /mnt/evad_fs/worldmodel/xugangwei/data/Monocular_Data/DIODE
+        data_root: /data/Monocular_Data/DIODE
         split: test
         transforms:
           - _target_: ppd.data.transform.PrepareForNet
         split_path: ppd/datasets/diode/diode_val_all_filename_list.txt
 
       - _target_: ppd.data.eth3d.Dataset
-        data_root: /mnt/evad_fs/worldmodel/xugangwei/data/Monocular_Data/ETH3D
+        data_root: /data/Monocular_Data/ETH3D
         split: test
         transforms:
           - _target_: ppd.data.transform.PrepareForNet
         split_path: ppd/datasets/eth3d/eth3d_filename_list.txt
 
       - _target_: ppd.data.scannet.Dataset
-        data_root: /mnt/evad_fs/worldmodel/xugangwei/data/Monocular_Data/ScanNet
+        data_root: /data/Monocular_Data/ScanNet
         split: test
         transforms:
           - _target_: ppd.data.transform.PrepareForNet
         split_path: ppd/datasets/scannet/scannet_val_sampled_list_800_1.txt
 
       - _target_: ppd.data.kitti.Dataset
-        data_root: /mnt/evad_fs/worldmodel/xugangwei/data/Monocular_Data/KITTI
+        data_root: /data/Monocular_Data/KITTI
         split: test
         transforms:
           - _target_: ppd.data.transform.PrepareForNet
