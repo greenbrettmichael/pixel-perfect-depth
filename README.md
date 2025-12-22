@@ -76,6 +76,19 @@ Please download the pretrained model [moge2.pt](https://huggingface.co/Ruicheng/
 python run_point_cloud.py --save_pcd
 ```
 
+### Training
+
+Our training strategy follows a two-stage curriculum:
+
+* **Stage 1: Pre-training.** Conducted at 512×512 resolution on the Hypersim dataset.
+    ```bash
+    python main.py --cfg_file ppd/configs/train_pretrain.yaml pl_trainer.devices=8
+    ```
+* **Stage 2: Fine-tuning.** Conducted at 1024×768 resolution on a mixture of five datasets.
+    ```bash
+    python main.py --cfg_file ppd/configs/train_finetune.yaml pl_trainer.devices=8
+    ```
+
 ## Qualitative Comparisons with Previous Methods
 
 Our model preserves more fine-grained details than Depth Anything v2 and MoGe 2, while demonstrating significantly higher robustness compared to Depth Pro.
