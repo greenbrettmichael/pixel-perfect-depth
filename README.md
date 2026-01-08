@@ -78,7 +78,7 @@ python run_point_cloud.py --save_pcd
 ```
 
 ### Running depth on *video*
-Download our pretrained model [ppvd.pth]() and put it under the `checkpoints/` directory. In addition, you also need to download the pretrained model [pi3.safetensors](https://huggingface.co/yyfz233/Pi3/resolve/main/model.safetensors)
+Download our pretrained model [ppvd.pth](https://drive.google.com/file/d/1IbMxrljpqkw92Z0G3CVEIrf-JffbI8sN/view?usp=drive_link) and put it under the `checkpoints/` directory. In addition, you also need to download the pretrained model [pi3.safetensors](https://huggingface.co/yyfz233/Pi3/resolve/main/model.safetensors)
 
 ```bash
 python run_video.py 
