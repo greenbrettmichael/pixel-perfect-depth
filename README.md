@@ -32,6 +32,7 @@ its estimated depth maps can produce high-quality, flying-pixel-free point cloud
 * Although our model is trained at a fixed resolution of 1024×768, it can flexibly support various input resolutions and aspect ratios during inference.
 
 ## News
+- **2026-01-09:** We release the PPVD model together with its weights.
 - **2025-12-20:** We release the training code for PPD, featuring a two-stage pipeline: 512×512 pre-training followed by 1024×768 fine-tuning.
 - **2025-12-01:** We release a new PPD model together with its weights, which leverage MoGe2 to provide semantics and deliver a 20–30% improvement on zero-shot benchmarks.
 - **2025-10-01:** Paper, project page, code, models, and demo are all released.
@@ -74,6 +75,13 @@ Please download the pretrained model [moge2.pt](https://huggingface.co/Ruicheng/
 
 ```bash
 python run_point_cloud.py --save_pcd
+```
+
+### Running depth on *video*
+Download our pretrained model [ppvd.pth]() and put it under the `checkpoints/` directory. In addition, you also need to download the pretrained model [pi3.safetensors](https://huggingface.co/yyfz233/Pi3/resolve/main/model.safetensors)
+
+```bash
+python run_video.py 
 ```
 
 ### Training
