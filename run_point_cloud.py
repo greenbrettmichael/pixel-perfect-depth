@@ -18,10 +18,10 @@ from ppd.models.ppd import PixelPerfectDepth
 if __name__ == '__main__':
     set_seed(666) # set random seed
     parser = argparse.ArgumentParser(description='Pixel-Perfect Depth')
-    parser.add_argument('--img_path', type=str, default='assets/examples')
+    parser.add_argument('--img_path', type=str, default='assets/examples/images')
     parser.add_argument('--input_size', type=int, default=[1024, 768])
     parser.add_argument('--outdir', type=str, default='depth_vis')
-    parser.add_argument('--semantics_pth', type=str, default='checkpoints/depth_anything_v2_vitl.pth')
+    parser.add_argument('--semantics_model', type=str, default='DA2', choices=['MoGe2', 'DA2'])
     parser.add_argument('--sampling_steps', type=int, default=20)
     parser.add_argument('--apply_filter', action='store_false', default=True)
     parser.add_argument('--pred_only', action='store_true', help='only display/save the predicted depth (no input image)')
@@ -32,10 +32,17 @@ if __name__ == '__main__':
 
     DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu')
 
+    if args.semantics_model == 'MoGe2':
+        semantics_pth = 'checkpoints/moge2.pt'
+        model_pth = 'checkpoints/ppd_moge.pth'
+    else:
+        semantics_pth = 'checkpoints/depth_anything_v2_vitl.pth'
+        model_pth = 'checkpoints/ppd.pth'
+
     moge = MoGeModel.from_pretrained("checkpoints/moge2.pt").to(DEVICE).eval()
 
-    model = PixelPerfectDepth(semantics_pth=args.semantics_pth, sampling_steps=args.sampling_steps)
-    model.load_state_dict(torch.load('checkpoints/ppd.pth', map_location='cpu'), strict=False)
+    model = PixelPerfectDepth(semantics_model=args.semantics_model, semantics_pth=semantics_pth, sampling_steps=args.sampling_steps)
+    model.load_state_dict(torch.load(model_pth, map_location='cpu'), strict=False)
     model = model.to(DEVICE).eval()
 
     if os.path.isfile(args.img_path):

@@ -10,11 +10,12 @@ poly_features = PolynomialFeatures(degree=degree, include_bias=False)
 ransac = RANSACRegressor(max_trials=1000)
 model = make_pipeline(poly_features, ransac)
 
-def recover_metric_depth_ransac(pred, gt, mask):
+def recover_metric_depth_ransac(pred, gt, mask, log=True):
     pred = pred.astype(np.float32)
     gt = gt.astype(np.float32)
 
     mask_gt = gt[mask].astype(np.float32)
+    ori_mask_gt = mask_gt
     mask_pred = pred[mask].astype(np.float32)
 
     ## depth -> log depth
@@ -37,4 +38,5 @@ def recover_metric_depth_ransac(pred, gt, mask):
 
     ## log depth -> depth
     pred_metric = np.exp(pred_metric) - 1.
+    pred_metric = np.clip(pred_metric, 1e-3, np.max(ori_mask_gt))
     return pred_metric

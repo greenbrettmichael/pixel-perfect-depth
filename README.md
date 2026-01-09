@@ -32,15 +32,22 @@ its estimated depth maps can produce high-quality, flying-pixel-free point cloud
 * Although our model is trained at a fixed resolution of 1024×768, it can flexibly support various input resolutions and aspect ratios during inference.
 
 ## News
+- **2026-01-09:** We release the PPVD model together with its weights.
+- **2025-12-20:** We release the training code for PPD, featuring a two-stage pipeline: 512×512 pre-training followed by 1024×768 fine-tuning.
+- **2025-12-01:** We release a new PPD model together with its weights, which leverage MoGe2 to provide semantics and deliver a 20–30% improvement on zero-shot benchmarks.
 - **2025-10-01:** Paper, project page, code, models, and demo are all released.
+
+## Benchmarks
+![benchmark](assets/benchmarks.jpg)
 
 ## Pre-trained Models
 
 Our pretrained models are available on the huggingface hub:
 
-| Model | Params | Checkpoint | Training Resolution |
-|:-|-:|:-:|:-:|
-| PPD-Large | 500M | [Download](https://huggingface.co/gangweix/Pixel-Perfect-Depth/resolve/main/ppd.pth) | 1024×768 |
+| Model | Semantics | Params | Checkpoint | Training Resolution |
+|:-|:-|-:|:-:|:-:|
+| PPD | DA2 | 500M | [Download](https://huggingface.co/gangweix/Pixel-Perfect-Depth/resolve/main/ppd.pth) | 1024×768 |
+| PPD | MoGe2 | 500M | [Download](https://drive.google.com/file/d/1tabmcsbRVDKDfmO4KU1vOjurzN-wp0HV/view?usp=sharing) | 1024×768 |
 
 ## Usage
 
@@ -53,7 +60,7 @@ pip install -r requirements.txt
 ```
 
 Download our pretrained model [ppd.pth](https://huggingface.co/gangweix/Pixel-Perfect-Depth/resolve/main/ppd.pth) and put it under the `checkpoints/` directory.
-In addition, you also need to download the pretrained model [depth_anything_v2_vitl.pth](https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth?download=true) and put it under the `checkpoints/` directory.
+In addition, you also need to download the pretrained model [depth_anything_v2_vitl.pth](https://huggingface.co/depth-anything/Depth-Anything-V2-Large/resolve/main/depth_anything_v2_vitl.pth?download=true) (or [moge2.pt](https://huggingface.co/Ruicheng/moge-2-vitl-normal/resolve/main/model.pt?download=true)) and put it under the `checkpoints/` directory.
 
 ### Running depth on *images*
 
@@ -69,6 +76,26 @@ Please download the pretrained model [moge2.pt](https://huggingface.co/Ruicheng/
 ```bash
 python run_point_cloud.py --save_pcd
 ```
+
+### Running depth on *video*
+Download our pretrained model [ppvd.pth](https://drive.google.com/file/d/1IbMxrljpqkw92Z0G3CVEIrf-JffbI8sN/view?usp=drive_link) and put it under the `checkpoints/` directory. In addition, you also need to download the pretrained model [pi3.safetensors](https://huggingface.co/yyfz233/Pi3/resolve/main/model.safetensors)
+
+```bash
+python run_video.py 
+```
+
+### Training
+
+Our training strategy follows a two-stage curriculum:
+
+* **Stage 1: Pre-training.** Conducted at 512×512 resolution on the Hypersim dataset.
+    ```bash
+    python main.py --cfg_file ppd/configs/train_pretrain.yaml pl_trainer.devices=8
+    ```
+* **Stage 2: Fine-tuning.** Conducted at 1024×768 resolution on a mixture of five datasets.
+    ```bash
+    python main.py --cfg_file ppd/configs/train_finetune.yaml pl_trainer.devices=8
+    ```
 
 ## Qualitative Comparisons with Previous Methods
 
@@ -86,7 +113,7 @@ If you find this project useful, please consider citing:
 
 ```bibtex
 @article{xu2025pixel,
-  title={Pixel-Perfect Depth with Semantics-Prompted Diffusion Transformers},
+  title={Pixel-perfect depth with semantics-prompted diffusion transformers},
   author={Xu, Gangwei and Lin, Haotong and Luo, Hongcheng and Wang, Xianqi and Yao, Jingfeng and Zhu, Lianghui and Pu, Yuechuan and Chi, Cheng and Sun, Haiyang and Wang, Bing and others},
   journal={arXiv preprint arXiv:2510.07316},
   year={2025}

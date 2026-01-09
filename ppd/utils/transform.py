@@ -3,16 +3,25 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-
-
 def image2tensor(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = np.asarray(image / 255.).astype(np.float32)
     image = np.transpose(image, (2, 0, 1))
     image = np.ascontiguousarray(image).astype(np.float32)
     image = torch.from_numpy(image).unsqueeze(0)
-
     return image
+
+def video2tensor(images):
+    tensor_list = []
+    for i in range(images.shape[0]):
+        image = images[i]
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = np.asarray(image / 255.).astype(np.float32)
+        image = np.transpose(image, (2, 0, 1))
+        image = np.ascontiguousarray(image).astype(np.float32)
+        image = torch.from_numpy(image).unsqueeze(0)
+        tensor_list.append(image)
+    return tensor_list
 
 def resize_1024(image):
     image = cv2.resize(image, (1024, 768), interpolation=cv2.INTER_LINEAR)

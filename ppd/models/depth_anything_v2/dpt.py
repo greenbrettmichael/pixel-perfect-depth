@@ -137,16 +137,16 @@ class DPTHead(nn.Module):
         layer_3_rn = self.scratch.layer3_rn(layer_3)
         layer_4_rn = self.scratch.layer4_rn(layer_4)
         
-        path_4 = self.scratch.refinenet4(layer_4_rn, size=layer_3_rn.shape[2:])  
+        path_4 = self.scratch.refinenet4(layer_4_rn, size=layer_3_rn.shape[2:])        
         path_3 = self.scratch.refinenet3(path_4, layer_3_rn, size=layer_2_rn.shape[2:])
-        # path_2 = self.scratch.refinenet2(path_3, layer_2_rn, size=layer_1_rn.shape[2:])
-        # path_1 = self.scratch.refinenet1(path_2, layer_1_rn)
+        path_2 = self.scratch.refinenet2(path_3, layer_2_rn, size=layer_1_rn.shape[2:])
+        path_1 = self.scratch.refinenet1(path_2, layer_1_rn)
         
-        # out = self.scratch.output_conv1(path_1)
-        # out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
-        # out = self.scratch.output_conv2(out)
-
-        return path_3.flatten(2).transpose(1, 2)
+        out = self.scratch.output_conv1(path_1)
+        out = F.interpolate(out, (int(patch_h * 14), int(patch_w * 14)), mode="bilinear", align_corners=True)
+        out = self.scratch.output_conv2(out)
+        
+        return out
 
 
 class DepthAnythingV2(nn.Module):
@@ -171,25 +171,17 @@ class DepthAnythingV2(nn.Module):
         self.pretrained = DINOv2(model_name=encoder)
         # self.depth_head = DPTHead(self.pretrained.embed_dim, features, use_bn, out_channels=out_channels, use_clstoken=use_clstoken)
     
-    def forward(self, x):
-
+    def forward_semantics(self, x):
         ori_h, ori_w = x.shape[-2:]
-
         mean=[0.485, 0.456, 0.406]
         std=[0.229, 0.224, 0.225]
         mean = torch.tensor(mean).view(1, 3, 1, 1).to(x.device)
         std = torch.tensor(std).view(1, 3, 1, 1).to(x.device)
         x = (x - mean) / std
-
         new_h = (ori_h // 16) * 14
         new_w = (ori_w // 16) * 14
-
         x = F.interpolate(x, size=(new_h, new_w), mode='bicubic', align_corners=False)
-
-        # patch_h, patch_w = x.shape[-2] // 14, x.shape[-1] // 14
-        # features = self.pretrained.get_intermediate_layers(x, self.intermediate_layer_idx[self.encoder], return_class_token=True)
         semantics = self.pretrained.forward_features(x)["x_norm_patchtokens"]
-
         return semantics
     
     @torch.no_grad()

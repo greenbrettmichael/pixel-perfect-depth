@@ -134,6 +134,18 @@ class MoGeModel(nn.Module):
         else:
             raise ValueError(f"Invalid remap output type: {self.remap_output}")
         return points
+
+    def forward_semantics(self, image: torch.Tensor) -> Dict[str, torch.Tensor]:
+        batch_size, _, img_h, img_w = image.shape
+        device, dtype = image.device, image.dtype
+
+        base_h, base_w = img_h//16, img_w//16
+
+        # Backbones encoding
+        features, cls_token = self.encoder(image, base_h, base_w, return_class_token=True)
+        semantics = features.flatten(2).transpose(1, 2)
+
+        return semantics
     
     def forward(self, image: torch.Tensor, num_tokens: int) -> Dict[str, torch.Tensor]:
         batch_size, _, img_h, img_w = image.shape

@@ -115,18 +115,21 @@ class DiT(nn.Module):
         hidden_size=1024,
         depth=24,
         num_heads=16,
+        patch_size=8,
         mlp_ratio=4.0,
     ):
         super().__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.num_heads = num_heads
+        self.patch_size = patch_size
+        self.depth = depth
 
         rope_freq = 100
         self.rope = RotaryPositionEmbedding2D(frequency=rope_freq) if rope_freq > 0 else None
         self.position_getter = PositionGetter() if self.rope is not None else None
 
-        self.x_embedder = PatchEmbed(in_chans=in_channels, embed_dim=hidden_size)
+        self.x_embedder = PatchEmbed(patch_size=patch_size*2, in_chans=in_channels, embed_dim=hidden_size)
         self.t_embedder = TimestepEmbedder(hidden_size)
 
         self.blocks = nn.ModuleList(
@@ -134,14 +137,14 @@ class DiT(nn.Module):
         )
 
         self.proj_fusion = nn.Sequential(
-                nn.Linear(hidden_size*2, hidden_size*4),
+                nn.Linear(hidden_size+1024, hidden_size*4),
                 nn.SiLU(),
                 nn.Linear(hidden_size*4, hidden_size*4),
                 nn.SiLU(),
                 nn.Linear(hidden_size*4, hidden_size*4),
             )
 
-        self.final_layer = FinalLayer(hidden_size, 8, self.out_channels)
+        self.final_layer = FinalLayer(hidden_size, patch_size, self.out_channels)
         self.initialize_weights()
 
     def initialize_weights(self):
@@ -180,7 +183,7 @@ class DiT(nn.Module):
         imgs: (N, H, W, C)
         """
         c = self.out_channels
-        p = 8
+        p = self.patch_size
         h = height // p
         w = width // p
         assert h * w == x.shape[1]
@@ -213,16 +216,16 @@ class DiT(nn.Module):
 
         # for block in self.blocks:
         for i, block in enumerate(self.blocks):
-            if i < 12:
+            if i < (self.depth//2):
                 x = block(x, t, pos0)  # (N, T, D)
             else:
                 x = block(x, t, pos1)  # (N, T, D)
 
-            if i == 11:
+            if i == (self.depth//2)-1:
 
                 semantics = F.normalize(semantics, dim=-1)
                 x = self.proj_fusion(torch.cat([x, semantics], dim=-1))
-                p = 16
+                p = self.patch_size * 2
                 x = x.reshape(shape=(N, H//p, W//p, 2, 2, D))
                 x = torch.einsum("nhwpqc->nchpwq", x)
                 x = x.reshape(shape=(N, D, (H//p)*2, (W//p)*2))
